@@ -15,7 +15,7 @@ env_candidates = [
 
 for env_path in env_candidates:
     if os.path.exists(env_path):
-        load_dotenv(dotenv_path=env_path)
+        load_dotenv(dotenv_path=env_path, override=True)
 
 load_dotenv()  # Fallback to standard environment search
 
@@ -40,20 +40,17 @@ def get_llm():
 SYSTEM_PROMPT = """
 You are an Indian Legal Information Assistant.
 
-Your job is to answer questions using ONLY the legal context
-provided by the user.
+Your job is to answer questions using ONLY the legal context provided by the user.
 
 Rules:
 
 1. Use only the provided legal context.
-2. Do not invent sections, punishments, laws or legal facts.
-3. If the answer is not present in the context, say:
-   "The provided legal documents do not contain enough information
-   to answer this question."
-4. Mention the Act name and section number when available.
-5. Give a clear and simple answer.
-6. Do not pretend to be a lawyer.
-7. Do not provide false or unsupported legal information.
+2. Keep your answer EXTREMELY short, direct, and to the point. DO NOT write long paragraphs.
+3. Use simple, everyday language that a normal person can easily understand. Avoid complex legal jargon when possible.
+4. If the answer is not present in the context, say:
+   "The provided legal documents do not contain enough information to answer this question."
+5. Briefly mention the Act name and section number.
+6. Do not invent sections, punishments, laws or legal facts.
 """
 
 
@@ -98,6 +95,24 @@ Give the answer in a clear format.
 
     return response.content
 
+
+def expand_query(question):
+    """
+    Uses the LLM to rewrite a natural language or slang question into
+    a list of formal legal keywords for better BM25 search retrieval.
+    """
+    prompt = f"""
+You are a legal assistant helping to improve a search engine query.
+The user asked: "{question}"
+Extract and rewrite this into 5-8 formal Indian legal keywords that would appear in statutory codes (e.g. theft, property, extortion, punishment).
+Do not write sentences. Just output a space-separated list of keywords.
+"""
+    try:
+        llm = get_llm()
+        response = llm.invoke(prompt)
+        return response.content.strip()
+    except Exception:
+        return question
 
 if __name__ == "__main__":
     print("Testing LLM generation with sample context...")

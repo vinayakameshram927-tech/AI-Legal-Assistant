@@ -1,3 +1,7 @@
+from pipeline import run_pipeline
+from search import search, display_results
+from build_index import build_index
+from build_data import build_data
 import os
 import sys
 
@@ -7,10 +11,6 @@ if SRC_DIR not in sys.path:
     sys.path.append(SRC_DIR)
 
 # Import all linked modules and functions
-from build_data import build_data
-from build_index import build_index
-from search import search, display_results
-from pipeline import run_pipeline
 
 
 def main():

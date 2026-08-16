@@ -1,4 +1,3 @@
-import joblib
 
 from pdf_loader import load_pdf
 from chunker import create_chunks
@@ -79,6 +78,7 @@ documents = [
     }
 ]
 
+
 def build_data():
     all_chunks = []
 
@@ -113,6 +113,7 @@ def build_data():
 
     print("Total chunks:", len(all_chunks))
     print("Saved to: data/chunks.csv")
+
 
 if __name__ == "__main__":
     build_data()

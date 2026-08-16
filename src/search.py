@@ -1,7 +1,5 @@
 import joblib
 
-from rank_bm25 import BM25Okapi
-
 
 INDEX_PATH = "data/bm25_index.pkl"
 
@@ -19,12 +17,12 @@ def preprocess(text):
     return tokens
 
 
-def load_index():
+def load_index(index_path=INDEX_PATH):
 
     print("Loading BM25 index...")
 
     # Load index using Joblib
-    index_data = joblib.load(INDEX_PATH)
+    index_data = joblib.load(index_path)
 
     bm25 = index_data["bm25"]
     df = index_data["data"]
@@ -32,10 +30,10 @@ def load_index():
     return bm25, df
 
 
-def search(query, top_k=5):
+def search(query, top_k=5, index_path=INDEX_PATH):
 
     # Load BM25 index
-    bm25, df = load_index()
+    bm25, df = load_index(index_path)
 
     # Process user question
     query_tokens = preprocess(query)
