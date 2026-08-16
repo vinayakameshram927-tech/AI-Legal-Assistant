@@ -69,4 +69,3 @@ AI-Legal-Assistant/
 ├── frontend/
 │   └── app.py            # Streamlit Web UI
 └── requirements.txt      # Python dependencies
-```

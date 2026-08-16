@@ -1,11 +1,10 @@
+from llm import generate_answer
+from search import search
 import os
 import sys
 
 # Ensure src directory is in sys.path for direct script execution
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from search import search
-from llm import generate_answer
 
 
 def run_pipeline(question, top_k=5):
@@ -61,7 +60,6 @@ def main():
                 )
         except Exception as e:
             print(f"\n[Error running pipeline]: {e}")
-
 
 
 if __name__ == "__main__":
